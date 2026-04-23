@@ -1,0 +1,39 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
+import { FaGithub } from "react-icons/fa";
+import TactileBladeButton from "./ui/TactileBladeButton";
+
+export default function Hero() {
+  return (
+    <section className="min-h-[80vh] flex flex-col justify-center max-w-5xl mx-auto px-6">
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="space-y-8"
+      >
+        <div className="space-y-4">
+          <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-black">
+            Saarthak Agarwal.
+          </h1>
+          <p className="text-xl md:text-2xl text-black/80 font-medium max-w-2xl font-mono">
+            Full-stack Developer & System Automation Engineer.
+          </p>
+        </div>
+        
+        <div className="flex flex-wrap items-center gap-8 pt-6">
+          <TactileBladeButton href="#projects">
+            Explore Projects
+            <ArrowRight className="w-5 h-5 ml-2" />
+          </TactileBladeButton>
+          <TactileBladeButton href="https://github.com/saarthak1234">
+            <FaGithub className="w-5 h-5 mr-3" />
+            GitHub
+          </TactileBladeButton>
+        </div>
+      </motion.div>
+    </section>
+  );
+}
