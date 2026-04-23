@@ -7,23 +7,23 @@ import TactileBladeButton from "./ui/TactileBladeButton";
 
 export default function Hero() {
   return (
-    <section className="min-h-[80vh] flex flex-col justify-center max-w-5xl mx-auto px-6">
+    <section className="min-h-[80vh] flex flex-col justify-center items-center text-center max-w-5xl mx-auto px-6">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="space-y-8"
+        className="space-y-8 flex flex-col items-center"
       >
         <div className="space-y-4">
-          <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-black">
+          <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-black text-center">
             Saarthak Agarwal.
           </h1>
-          <p className="text-xl md:text-2xl text-black/80 font-medium max-w-2xl font-mono">
+          <p className="text-xl md:text-2xl text-black/80 font-medium max-w-2xl font-mono text-center">
             Full-stack Developer & System Automation Engineer.
           </p>
         </div>
         
-        <div className="flex flex-wrap items-center gap-8 pt-6">
+        <div className="flex flex-wrap justify-center items-center gap-8 pt-6">
           <TactileBladeButton href="#projects">
             Explore Projects
             <ArrowRight className="w-5 h-5 ml-2" />

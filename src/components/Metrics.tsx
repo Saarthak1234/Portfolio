@@ -19,6 +19,7 @@ const metrics = [
 export default function Metrics() {
   return (
     <section className="py-12 max-w-5xl mx-auto px-6 w-full">
+      <h2 className="text-3xl font-mono text-zinc-500 font-bold uppercase tracking-wide text-center mb-10">Achievements.</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
         {metrics.map((metric, idx) => {
           const Icon = metric.icon;

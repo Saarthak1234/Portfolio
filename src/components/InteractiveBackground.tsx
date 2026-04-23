@@ -18,7 +18,7 @@ export default function InteractiveBackground() {
     canvas.height = height;
 
     const particles: any[] = [];
-    const numParticles = 80;
+    const numParticles = 200;
 
     let mouse = { x: -1000, y: -1000 };
     

@@ -7,18 +7,18 @@ import { SiJavascript, SiMysql, SiMongodb, SiFigma, SiCplusplus, SiGo, SiPostgre
 
 const skills = [
   { icon: SiCplusplus, name: "C/C++" },
-  { icon: SiGo, name: "Go" },
+  // { icon: SiGo, name: "Go" },
   { icon: SiJavascript, name: "JavaScript" },
   { icon: FaHtml5, name: "HTML5" },
   { icon: FaCss3Alt, name: "CSS3" },
   { icon: FaGitAlt, name: "Git" },
   { icon: FaGithub, name: "GitHub" },
   { icon: FaDocker, name: "Docker" },
-  { icon: FaDocker, name: "Docker Compose" },
+  // { icon: FaDocker, name: "Docker Compose" },
   { icon: SiPostman, name: "Postman" },
-  { icon: SiGooglecolab, name: "Colab" },
+  // { icon: SiGooglecolab, name: "Colab" },
   { icon: FaLinux, name: "Linux" },
-  { icon: FaWindows, name: "Windows" },
+  // { icon: FaWindows, name: "Windows" },
   { icon: SiNextdotjs, name: "Next.js" },
   { icon: FaReact, name: "React.js" },
   { icon: SiExpress, name: "Express.js" },
@@ -26,14 +26,14 @@ const skills = [
   { icon: FaNodeJs, name: "Node.js" },
   { icon: SiMongodb, name: "MongoDB" },
   { icon: SiPostgresql, name: "PostgreSQL" },
-  { icon: SiFirebase, name: "Firebase" },
+  // { icon: SiFirebase, name: "Firebase" },
   { icon: SiRender, name: "Render" },
-  { icon: SiRedux, name: "Redux" },
-  { icon: SiMysql, name: "MySQL" },
+  // { icon: SiRedux, name: "Redux" },
+  // { icon: SiMysql, name: "MySQL" },
   { icon: SiFigma, name: "Figma" },
-  { icon: SiPhp, name: "PHP" },
-  { icon: SiCodeigniter, name: "CodeIgniter" },
-  { icon: SiFastapi, name: "FastAPI" }
+  // { icon: SiPhp, name: "PHP" },
+  // { icon: SiCodeigniter, name: "CodeIgniter" },
+  // { icon: SiFastapi, name: "FastAPI" }
 ];
 
 function TechCard({ item }: { item: any }) {
@@ -119,16 +119,14 @@ function TechCard({ item }: { item: any }) {
 export default function TechStack() {
   return (
     <section id="skills" className="py-20 mx-auto px-6 max-w-6xl flex flex-col gap-12 bg-white selection:bg-[#39FF14] selection:text-black">
-      <h1 className="font-mono italic font-black text-black text-[2.5rem] tracking-tight">
-        Skills<span className="text-[#39FF14] text-[3rem]">.</span>
-      </h1>
+      <h2 className="text-3xl font-mono text-zinc-500 font-bold uppercase tracking-wide text-center mb-10">Skills.</h2>
 
       <div className="flex flex-col gap-16">
         <article className="flex flex-col gap-8">
-          <h2 className="text-xl font-mono text-zinc-500 font-bold uppercase tracking-wide">
+          <h2 className="text-xl font-mono text-zinc-500 font-bold uppercase tracking-wide text-center w-full">
             Technologies and tools
           </h2>
-          <ul className="flex gap-4 flex-wrap w-fit">
+          <ul className="flex gap-4 flex-wrap w-full justify-center max-w-4xl mx-auto">
             {skills.map((item, idx) => (
               <TechCard key={idx} item={item} />
             ))}
