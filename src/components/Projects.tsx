@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
+import { AccentCorner } from "./ui/AccentMarks";
 
 const projects = [
   {
@@ -53,7 +54,8 @@ export default function Projects() {
         className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 pl-4"
       >
         {projects.map((project, idx) => (
-          <motion.div key={idx} variants={item}>
+          <motion.div key={idx} variants={item} className="relative">
+            <AccentCorner position="top-left" />
             <Link href={project.link} className="block group h-full">
               {/* Normal Bento Wrapper */}
               <div className="h-full px-8 py-10 bg-black shadow-ghost rounded-none flex flex-col gap-4 transform transition-all duration-300 hover:-translate-y-2 relative">

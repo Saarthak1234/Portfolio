@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import InteractiveBackground from "@/components/InteractiveBackground";
+import ScrollManager from "@/components/ScrollManager";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,9 +29,11 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col overflow-x-hidden">
         <InteractiveBackground />
-        {children}
+        <ScrollManager>
+          {children}
+        </ScrollManager>
       </body>
     </html>
   );
