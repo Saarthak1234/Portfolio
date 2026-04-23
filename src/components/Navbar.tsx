@@ -2,14 +2,16 @@
 
 import { useState, useEffect, useRef } from "react";
 import gsap from "gsap";
-import { Home, Grid, Briefcase, Mail, Menu, X } from "lucide-react";
+import { Home, Grid, Briefcase, Mail, Menu, X, Trophy } from "lucide-react";
 import { FaLaptopCode } from "react-icons/fa";
+import { useScroll, useMotionValueEvent } from "framer-motion";
 
 const links = [
   { name: "Home", href: "#hero", Icon: Home },
   { name: "Skills", href: "#skills", Icon: Grid },
   { name: "Experience", href: "#experience", Icon: FaLaptopCode },
   { name: "Shipments", href: "#projects", Icon: Briefcase },
+  { name: "Achievements", href: "#achievements", Icon: Trophy },
   { name: "Contact", href: "#contact", Icon: Mail },
 ];
 
@@ -19,7 +21,7 @@ function NavItem({ item, idx, isOpen, onClick, total }: any) {
   const iconRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const angle = Math.PI - (idx / (total - 1)) * Math.PI; 
+    const angle = Math.PI - (idx / (total - 1)) * Math.PI;
     const radius = 90; // px
     const x = Math.cos(angle) * radius;
     const y = Math.sin(angle) * radius;
@@ -80,9 +82,9 @@ function NavItem({ item, idx, isOpen, onClick, total }: any) {
       style={{ opacity: 0, scale: 0.5, pointerEvents: isOpen ? 'auto' : 'none' }}
       title={item.name}
     >
-      <div 
+      <div
         ref={sweepRef}
-        className="absolute inset-0 bg-[#39FF14] z-0 pointer-events-none" 
+        className="absolute inset-0 bg-[#39FF14] z-0 pointer-events-none"
         style={{ borderRadius: '50%', transform: 'scale(0)' }}
       />
       <div ref={iconRef} className="absolute inset-0 flex items-center justify-center z-10 text-white">
@@ -92,32 +94,98 @@ function NavItem({ item, idx, isOpen, onClick, total }: any) {
   );
 }
 
-export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
+function ResumeButton({ hidden }: { hidden: boolean }) {
+  const btnRef = useRef<HTMLAnchorElement>(null);
+  const sweepRef = useRef<HTMLDivElement>(null);
+  const textRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (sweepRef.current) gsap.set(sweepRef.current, { scale: 0 });
+    if (textRef.current) gsap.set(textRef.current, { color: "#ffffff" });
+  }, []);
+
+  const handleEnter = () => {
+    gsap.killTweensOf([sweepRef.current, textRef.current]);
+    gsap.to(sweepRef.current, { scale: 1, duration: 0.3, ease: "power2.out" });
+    gsap.to(textRef.current, { color: "#000000", duration: 0.3 });
+  };
+
+  const handleLeave = () => {
+    gsap.killTweensOf([sweepRef.current, textRef.current]);
+    gsap.to(sweepRef.current, { scale: 0, duration: 0.3, ease: "power2.in" });
+    gsap.to(textRef.current, { color: "#ffffff", duration: 0.3 });
+  };
 
   return (
-    <div className="fixed top-8 left-1/2 -translate-x-1/2 z-50">
-      {/* Semicircle Nav Items */}
-      <div className="absolute top-7 left-7 z-10 w-0 h-0">
-        {links.map((item, idx) => (
-          <NavItem 
-            key={idx} 
-            item={item} 
-            idx={idx} 
-            total={links.length} 
-            isOpen={isOpen} 
-            onClick={() => setIsOpen(false)} 
-          />
-        ))}
+    <a
+      ref={btnRef}
+      href="https://drive.google.com/file/d/1gk3ylLfRm6Gst8TAgzE4lD48wLHmyZRN/view?usp=drive_link"
+      target="_blank"
+      onMouseEnter={handleEnter}
+      onMouseLeave={handleLeave}
+      className={`fixed top-8 right-6 md:right-8 z-50 px-6 py-2.5 bg-black border border-white/20 rounded font-mono font-bold tracking-widest text-xs uppercase overflow-hidden will-change-transform shadow-lg transition-all duration-500 hover:shadow-[0_0_15px_rgba(57,255,20,0.6)] hover:border-[#39FF14] ease-in-out ${hidden ? '-translate-y-40' : 'translate-y-0'}`}
+    >
+      <div
+        ref={sweepRef}
+        className="absolute inset-0 bg-[#39FF14] z-0 pointer-events-none rounded-none"
+        style={{ transform: 'scale(0)' }}
+      />
+      <div ref={textRef} className="relative z-10 flex items-center justify-center text-white">
+        RESUME
+      </div>
+    </a>
+  );
+}
+
+export default function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
+  const { scrollY } = useScroll();
+  const [hidden, setHidden] = useState(false);
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const previous = scrollY.getPrevious() || 0;
+
+    // Standard scroll behavior: hide when scrolling down, reappear when scrolling up
+    if (latest > previous && latest > 150) {
+      setHidden(true); // hide when scrolling down
+      setIsOpen(false);
+    } else if (latest < previous && latest > 150) {
+      setHidden(false); // reappear when scrolling up
+    }
+
+    // Always show at the top 
+    if (latest <= 150) {
+      setHidden(false);
+    }
+  });
+
+  return (
+    <>
+      <div className={`fixed top-8 left-1/2 -translate-x-1/2 z-50 transition-transform duration-500 ease-in-out ${hidden ? '-translate-y-40' : 'translate-y-0'}`}>
+        {/* Semicircle Nav Items */}
+        <div className="absolute top-7 left-7 z-10 w-0 h-0">
+          {links.map((item, idx) => (
+            <NavItem
+              key={idx}
+              item={item}
+              idx={idx}
+              total={links.length}
+              isOpen={isOpen}
+              onClick={() => setIsOpen(false)}
+            />
+          ))}
+        </div>
+
+        {/* Central Pop-Out Anchor Button */}
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="w-14 h-14 relative flex items-center justify-center bg-black text-white hover:text-black rounded-full shadow-md hover:bg-white transition-colors duration-300 z-20 outline-none border border-white/20"
+        >
+          {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+        </button>
       </div>
 
-      {/* Central Pop-Out Anchor Button */}
-      <button 
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-14 h-14 relative flex items-center justify-center bg-black text-white hover:text-black rounded-full shadow-md hover:bg-white transition-colors duration-300 z-20 outline-none border border-white/20"
-      >
-        {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-      </button>
-    </div>
+      <ResumeButton hidden={hidden} />
+    </>
   );
 }
