@@ -58,12 +58,12 @@ export default function Projects() {
 
             <Link href={project.link} className="block group h-full">
               {/* Normal Bento Wrapper */}
-              <div className="h-full px-8 py-10 bg-black shadow-ghost rounded-none flex flex-col gap-4 transform transition-all duration-300 hover:-translate-y-2 relative">
+              <div className="h-full px-8 py-10 bg-black shadow-ghost rounded-none border border-black group-hover:border-[#39FF14] flex flex-col gap-4 transform transition-all duration-300 hover:-translate-y-2 relative">
                 
                 {/* Content */}
                 <div className="flex flex-col h-full w-full">
                   <div className="absolute top-0 right-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <ArrowUpRight className="w-6 h-6 text-white" />
+                    <ArrowUpRight className="w-6 h-6 text-[#39FF14]" />
                   </div>
                   <h3 className="text-2xl font-bold font-mono text-white pr-8">{project.title}</h3>
                   <p className="text-zinc-400 text-sm flex-1 leading-relaxed font-mono mt-3">

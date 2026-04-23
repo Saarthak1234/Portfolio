@@ -26,30 +26,33 @@ export default function Experience() {
     <section id="experience" className="py-20 max-w-5xl mx-auto px-6 overflow-hidden">
       <h2 className="text-3xl font-mono text-zinc-500 font-bold uppercase tracking-wide text-center mb-10">Experience.</h2>
       
-      <div className="flex flex-col gap-12">
+      <div className="grid grid-cols-1 gap-8">
         {experiences.map((exp) => (
           <motion.div 
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.5 }}
             key={exp.id} 
-            className="flex flex-col gap-4 border-l-2 border-[#39FF14] pl-6 ml-4 relative"
+            className="px-8 py-10 bg-black shadow-ghost border border-black group-hover:border-[#39FF14] rounded-none flex flex-col gap-4 transform transition-all duration-300 hover:-translate-y-2 relative group"
           >
-            {/* structural timeline nub */}
-            <div className="absolute w-3 h-3 bg-black -left-[7px] top-2" />
-            
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-2">
-              <h3 className="text-2xl font-bold font-tech text-black tracking-wide">{exp.role}</h3>
-              <span className="font-mono text-sm font-bold text-zinc-500 bg-zinc-100 px-3 py-1">{exp.duration}</span>
+            <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
+              <div className="flex flex-col gap-2">
+                <h3 className="text-2xl font-bold font-mono text-white tracking-wide">{exp.role}</h3>
+                <h4 className="text-lg font-bold font-mono text-zinc-500 uppercase tracking-tighter">{exp.client}</h4>
+              </div>
+              <span className="font-mono text-sm font-bold text-black bg-white px-3 py-1 uppercase shrink-0">
+                {exp.duration}
+              </span>
             </div>
-            <h4 className="text-lg font-bold font-mono text-zinc-700 uppercase tracking-tighter">{exp.client}</h4>
-            <p className="text-black/80 font-mono text-sm leading-relaxed max-w-3xl">
+            
+            <p className="text-zinc-400 font-mono text-sm leading-relaxed mt-2">
               {exp.description}
             </p>
-            <div className="flex flex-wrap gap-3 mt-2">
+            
+            <div className="flex flex-wrap gap-3 mt-4">
               {exp.tech.map((t) => (
-                <span key={t} className="text-xs font-mono font-bold px-3 py-1 bg-black text-white rounded-none">
+                <span key={t} className="text-xs font-mono font-bold px-3 py-1 bg-white text-black rounded-none uppercase">
                   {t}
                 </span>
               ))}
