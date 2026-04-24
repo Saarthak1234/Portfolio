@@ -15,7 +15,7 @@ const contactLinks = [
   },
   {
     label: "LinkedIn",
-    value: "linkedin.com/in/saarthakagarwal",
+    value: "linkedin.com/in/saarthak-agarwal-sa",
     Icon: FaLinkedin,
     href: "www.linkedin.com/in/saarthak-agarwal-sa"
   },
