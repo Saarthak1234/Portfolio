@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import gsap from "gsap";
-import { Home, Grid, Briefcase, Mail, Menu, X, Trophy } from "lucide-react";
+import { Home, Grid, Briefcase, Mail, Menu, X, Trophy, ArrowUp } from "lucide-react";
 import { FaLaptopCode } from "react-icons/fa";
 import { useScroll, useMotionValueEvent } from "framer-motion";
 
@@ -106,13 +106,22 @@ function ResumeButton({ hidden }: { hidden: boolean }) {
 
   const handleEnter = () => {
     gsap.killTweensOf([sweepRef.current, textRef.current]);
+    gsap.set(sweepRef.current, { opacity: 1 }); // reset opacity incase mid-fade
     gsap.to(sweepRef.current, { scale: 1, duration: 0.3, ease: "power2.out" });
     gsap.to(textRef.current, { color: "#000000", duration: 0.3 });
   };
 
   const handleLeave = () => {
     gsap.killTweensOf([sweepRef.current, textRef.current]);
-    gsap.to(sweepRef.current, { scale: 0, duration: 0.3, ease: "power2.in" });
+    gsap.to(sweepRef.current, { 
+      scale: 1.5, 
+      opacity: 0, 
+      duration: 0.4, 
+      ease: "power2.out",
+      onComplete: () => {
+        gsap.set(sweepRef.current, { scale: 0, opacity: 1 });
+      }
+    });
     gsap.to(textRef.current, { color: "#ffffff", duration: 0.3 });
   };
 
@@ -137,25 +146,75 @@ function ResumeButton({ hidden }: { hidden: boolean }) {
   );
 }
 
+function ScrollToTopButton({ isVisible }: { isVisible: boolean }) {
+  const btnRef = useRef<HTMLButtonElement>(null);
+  const sweepRef = useRef<HTMLDivElement>(null);
+  const iconRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (sweepRef.current) gsap.set(sweepRef.current, { scale: 0 });
+    if (iconRef.current) gsap.set(iconRef.current, { color: "#ffffff" });
+  }, []);
+
+  const handleEnter = () => {
+    gsap.killTweensOf([sweepRef.current, iconRef.current]);
+    gsap.to(sweepRef.current, { scale: 1, duration: 0.3, ease: "power2.out" });
+    gsap.to(iconRef.current, { color: "#000000", duration: 0.3 });
+  };
+
+  const handleLeave = () => {
+    gsap.killTweensOf([sweepRef.current, iconRef.current]);
+    gsap.to(sweepRef.current, { scale: 0, duration: 0.3, ease: "power2.in" });
+    gsap.to(iconRef.current, { color: "#ffffff", duration: 0.3 });
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  return (
+    <button
+      ref={btnRef}
+      onClick={scrollToTop}
+      onMouseEnter={handleEnter}
+      onMouseLeave={handleLeave}
+      className={`fixed bottom-8 left-1/2 -translate-x-1/2 w-12 h-12 flex items-center justify-center bg-black border border-white/20 rounded-full z-50 overflow-hidden shadow-lg transition-all duration-500 hover:shadow-[0_0_15px_rgba(57,255,20,0.6)] hover:border-[#39FF14] ease-in-out ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0 pointer-events-none'}`}
+    >
+      <div 
+        ref={sweepRef}
+        className="absolute inset-0 bg-[#39FF14] z-0 pointer-events-none" 
+        style={{ borderRadius: '50%', transform: 'scale(0)' }}
+      />
+      <div ref={iconRef} className="absolute inset-0 flex items-center justify-center z-10 text-white">
+        <ArrowUp className="w-5 h-5 drop-shadow-sm" />
+      </div>
+    </button>
+  );
+}
+
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { scrollY } = useScroll();
   const [hidden, setHidden] = useState(false);
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     const previous = scrollY.getPrevious() || 0;
 
-    // Standard scroll behavior: hide when scrolling down, reappear when scrolling up
+    // Hide navbar when scrolling down, reappear when scrolling up
     if (latest > previous && latest > 150) {
-      setHidden(true); // hide when scrolling down
+      setHidden(true);
       setIsOpen(false);
+      setShowScrollTop(true);
     } else if (latest < previous && latest > 150) {
-      setHidden(false); // reappear when scrolling up
+      setHidden(false); 
+      setShowScrollTop(false);
     }
 
-    // Always show at the top 
+    // Always show navbar at the absolute top, and hide scroll button
     if (latest <= 150) {
       setHidden(false);
+      setShowScrollTop(false);
     }
   });
 
@@ -186,6 +245,7 @@ export default function Navbar() {
       </div>
 
       <ResumeButton hidden={hidden} />
+      <ScrollToTopButton isVisible={showScrollTop} />
     </>
   );
 }
